@@ -127,7 +127,6 @@
         $arrTopCategory = json_decode(json_encode(json_decode($topCategory)), true); ?>
 
         <div class="top-cate-homepage">
-
           <ul class="pstgms lstli" style="margin-top: 20px;">
             <?php foreach ($arrTopCategory as $category => $status) {
               if ($status == 'true') { ?>
@@ -136,7 +135,6 @@
                     <div class="in-list-top-cate"><?php echo ucfirst(str_replace('-', ' ', $category)) ?></div>
                   </a>
                 </li>
-
             <?php }
             } ?>
           </ul>
@@ -189,50 +187,53 @@
         </div>
 
       <?php } ?>
-      <div style="display: flex; flex-direction: column; margin-left: 10px">
-        <h2 style="font-size: 20px; font-weight: bold; color: #fff">Top categories</h2>
-        <?php
-        $topCategory = get_option('top_category_homepage');
-        if ($topCategory) {
-          $arrTopCategory = json_decode(json_encode(json_decode($topCategory)), true); ?>
 
-          <div class="top-cate-homepage">
-            <div class="list-top-cate">
-              <?php foreach ($arrTopCategory as $category => $status) {
-                if ($status == 'true') { ?>
+      <h2 style="font-size: 20px; font-weight: bold; color: #fff">Top categories</h2>
+      <?php
+      $topCategory = get_option('top_category_homepage');
+      if ($topCategory) {
+        $arrTopCategory = json_decode(json_encode(json_decode($topCategory)), true); ?>
+
+        <div class="top-cate-homepage">
+          <ul class="pstgms lstli" style="margin-top: 20px;">
+            <?php foreach ($arrTopCategory as $category => $status) {
+              if ($status == 'true') { ?>
+                <li class="post">
                   <a href="<?php echo get_category_link(get_cat_ID($category)) ?>">
                     <div class="in-list-top-cate"><?php echo ucfirst(str_replace('-', ' ', $category)) ?></div>
                   </a>
-              <?php }
-              } ?>
-            </div>
-          </div>
-        <?php }
-        ?>
+                </li>
+            <?php }
+            } ?>
+          </ul>
+        </div>
+      <?php } ?>
 
-        <?php
-        $category = get_category(get_query_var('cat'));
-        $queryGet = "SELECT * FROM " . $wpdb->prefix . 'top_game_category WHERE category_id = "' . $category->term_id . '"';
-        $resultTopGame = $wpdb->get_results($queryGet);
 
-        if (empty($resultTopGame)) {
+      <?php
+      $category = get_category(get_query_var('cat'));
+      $queryGet = "SELECT * FROM " . $wpdb->prefix . 'top_game_category WHERE category_id = "' . $category->term_id . '"';
+      $resultTopGame = $wpdb->get_results($queryGet);
+
+      if (empty($resultTopGame)) {
+        $listTopGame = array();
+      } else {
+        if (empty($resultTopGame[0]->game)) {
           $listTopGame = array();
         } else {
-          if (empty($resultTopGame[0]->game)) {
-            $listTopGame = array();
-          } else {
-            $listTopGame = explode(',', $resultTopGame[0]->game);
-          }
+          $listTopGame = explode(',', $resultTopGame[0]->game);
         }
+      }
 
-        ?>
-        <div class="top-cate-homepage">
-          <h2 style="font-size: 20px; font-weight: bold; color: #fff">Top games</h2>
-          <div class="list-top-cate">
-            <?php foreach ($listTopGame as $post_id) {
-              $img_url = get_post_meta($post_id, 'mabp_thumbnail_url');
-            ?>
-              <article class="pstcnt bgco1 rnd5" style="margin-left: 10px;">
+      ?>
+      <div class="top-cate-homepage">
+        <h2 style="font-size: 20px; font-weight: bold; color: #fff">Top games</h2>
+        <ul class="pstgms lstli" style="margin-top: 20px;">
+          <?php foreach ($listTopGame as $post_id) {
+            $img_url = get_post_meta($post_id, 'mabp_thumbnail_url');
+          ?>
+            <li class="post">
+              <article class="pstcnt bgco1 rnd5">
                 <figure class="rnd5"><a href="<?php echo get_permalink($post_id) ?>"><img src="<?php echo $img_url[0] ?>" width="100" height="100" alt="<?php echo get_the_title($post_id) ?>"></a></figure>
                 <header>
                   <h2><a href="<?php echo get_permalink($post_id) ?>"><?php echo get_the_title($post_id) ?></a></h2>
@@ -240,12 +241,14 @@
                   <a class="iconb-game" href="<?php echo get_permalink($post_id) ?>" title="Play"><span>Play</span></a>
                 </header>
               </article>
-            <?php } ?>
-          </div>
-        </div>
-      </div>
+            </li>
 
+          <?php } ?>
+        </ul>
+      </div>
     <?php } ?>
+
+
 
     <!--<bdcn>-->
     <section class="bdcn">

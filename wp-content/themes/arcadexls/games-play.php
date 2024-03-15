@@ -167,7 +167,7 @@
 <section>
   <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Related category</h3>
   <div class="top-cate-homepage">
-    <div class="list-top-cate">
+    <ul class="pstgms lstli" style="margin-top: 20px;">
       <?php
       $cat_id = get_the_category()[0]->term_id;
       $exclude = array($cat_id);
@@ -175,13 +175,13 @@
 
       foreach (get_categories() as $cat) {
         if (!in_array($cat->term_id, $exclude) and $cat->name != 'TOP DOWNLOAD') {
-          $cat_list[] = '<a href="' . esc_url(get_category_link($cat->term_id)) .
-            '"><div class="in-list-top-cate">' . $cat->name . '</div></a>';
+          $cat_list[] = '<li class="post"><a href="' . esc_url(get_category_link($cat->term_id)) .
+            '"><div class="in-list-top-cate">' . $cat->name . '</li></a>';
         }
       }
 
       echo implode(' ', $cat_list);
       ?>
-    </div>
+    </ul>
   </div>
 </section>

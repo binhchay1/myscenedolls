@@ -694,3 +694,7 @@ span.activity,.widget_display_replies li div,.widget_display_topics li div,.post
   .top-cate-homepage {
 	margin: 20px 0
   }
+
+  #playframe {
+	width: 100%;
+  }
