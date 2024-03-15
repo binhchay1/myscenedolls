@@ -19,12 +19,14 @@
   }
 
   #content-header {
-    font-size: 14px;
     padding: 1%;
     overflow: auto;
     margin-bottom: 10px;
     background-color: #fff;
     border-radius: 15px;
+    font-weight: bold;
+    color: #212426;
+    font-size: 18px;
   }
 </style>
 
@@ -179,7 +181,10 @@
       $result = $wpdb->get_results("SELECT * FROM wp_category_custom WHERE category_id = $cat_id");
       if (!empty($result)) {
       ?>
-        <h1><?php echo $result[0]->title ?></h1>
+        <div id="content-header" class="rounded bg-white">
+          <h1><?php echo $result[0]->title ?></h1>
+        </div>
+
       <?php } ?>
       <div style="display: flex; flex-direction: column; margin-left: 10px">
         <h2 style="font-size: 20px; font-weight: bold; color: #fff">Top categories</h2>
