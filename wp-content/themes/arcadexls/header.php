@@ -156,12 +156,12 @@
             $img_url = get_post_meta($post->ID, 'mabp_thumbnail_url');
           ?>
 
-            <article class="pstcnt bgco1 rnd5">
-              <figure class="rnd5"><a href="<?php get_permalink($post->ID) ?>"><img src="<?php echo $img_url[0] ?>" width="100" height="100" alt="<?php echo $post->post_title ?>"></a></figure>
+            <article class="pstcnt bgco1 rnd5" style="margin-left: 10px;">
+              <figure class="rnd5"><a href="<?php echo get_permalink($post->ID) ?>"><img src="<?php echo $img_url[0] ?>" width="100" height="100" alt="<?php echo $post->post_title ?>"></a></figure>
               <header>
-                <h2><a href="<?php get_permalink($post->ID) ?>"><?php echo get_the_title($post->ID) ?></a></h2>
-                <p><a href="<?php get_category_link(get_the_category($post->ID)) ?>" rel="category tag"><?php get_the_category($post->ID)[0]->cat_name ?></a></p>
-                <a class="iconb-game" href="<?php get_permalink($post->ID) ?>" title="Play"><span>Play</span></a>
+                <h2><a href="<?php echo get_permalink($post->ID) ?>"><?php echo get_the_title($post->ID) ?></a></h2>
+                <p><a href="<?php echo get_category_link(get_the_category($post->ID)) ?>" rel="category tag"><?php echo get_the_category($post->ID)[0]->cat_name ?></a></p>
+                <a class="iconb-game" href="<?php echo get_permalink($post->ID) ?>" title="Play"><span>Play</span></a>
               </header>
             </article>
 
@@ -224,13 +224,12 @@
             <?php foreach ($listTopGame as $post_id) {
               $img_url = get_post_meta($post_id, 'mabp_thumbnail_url');
             ?>
-
-              <article class="pstcnt bgco1 rnd5">
-                <figure class="rnd5"><a href="<?php get_permalink($post_id) ?>"><img src="<?php echo $img_url[0] ?>" width="100" height="100" alt="<?php echo get_the_title($post_id) ?>"></a></figure>
+              <article class="pstcnt bgco1 rnd5" style="margin-left: 10px;">
+                <figure class="rnd5"><a href="<?php echo get_permalink($post_id) ?>"><img src="<?php echo $img_url[0] ?>" width="100" height="100" alt="<?php echo get_the_title($post_id) ?>"></a></figure>
                 <header>
-                  <h2><a href="<?php get_permalink($post_id) ?>"><?php echo get_the_title($post_id) ?></a></h2>
-                  <p><a href="<?php get_category_link(get_the_category($post_id)) ?>" rel="category tag"><?php get_the_category($post_id)[0]->cat_name ?></a></p>
-                  <a class="iconb-game" href="<?php get_permalink($post_id) ?>" title="Play"><span>Play</span></a>
+                  <h2><a href="<?php echo get_permalink($post_id) ?>"><?php echo get_the_title($post_id) ?></a></h2>
+                  <p><a href="<?php echo get_category_link(get_the_category($post_id)) ?>" rel="category tag"><?php echo get_the_category($post_id)[0]->cat_name ?></a></p>
+                  <a class="iconb-game" href="<?php echo get_permalink($post_id) ?>" title="Play"><span>Play</span></a>
                 </header>
               </article>
             <?php } ?>
