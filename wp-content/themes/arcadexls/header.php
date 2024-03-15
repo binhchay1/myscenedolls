@@ -23,6 +23,8 @@
     padding: 1%;
     overflow: auto;
     margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 15px;
   }
 </style>
 
@@ -110,10 +112,133 @@
     </header>
     <!--</hdcn>-->
 
-    <div id="content-header" class="rounded bg-white">
-      <h1>All your favorite Online Games in one place!</h1>
-      <p>Explore our Free Online Games collection for endless fun! From educational to action-packed adventures, play lots of cool Browser Games right here!</p>
-    </div>
+    <?php if (is_home() and is_front_page()) { ?>
+      <?php $h1HomePage = get_option('h1_homepage') ?>
+      <div id="content-header" class="rounded bg-white">
+        <h1><?php echo $h1HomePage ?></h1>
+      </div>
+
+      <h2 style="font-size: 20px; font-weight: bold; color: #fff">Top categories</h2>
+      <?php
+      $topCategory = get_option('top_category_homepage');
+      if ($topCategory) {
+        $arrTopCategory = json_decode(json_encode(json_decode($topCategory)), true); ?>
+
+        <div class="top-cate-homepage">
+
+          <div class="list-top-cate">
+            <?php foreach ($arrTopCategory as $category => $status) {
+              if ($status == 'true') { ?>
+                <a href="<?php echo get_category_link(get_cat_ID($category)) ?>">
+                  <div class="in-list-top-cate"><?php echo ucfirst(str_replace('-', ' ', $category)) ?></div>
+                </a>
+            <?php }
+            } ?>
+          </div>
+        </div>
+      <?php }
+      ?>
+
+      <?php $args = array(
+        'posts_per_page'   => -1,
+        'post_type'        => 'post',
+        'meta_key'         => 'top_game_homepage',
+        'meta_value'       => '1'
+      );
+
+      $query = new WP_Query($args);
+
+      ?>
+      <div class="top-cate-homepage">
+        <h2 style="font-size: 20px; font-weight: bold; color: #fff">Top games</h2>
+        <div class="list-top-cate">
+          <?php foreach ($query->posts as $post) {
+            $img_url = get_post_meta($post->ID, 'mabp_thumbnail_url');
+          ?>
+
+            <article class="pstcnt bgco1 rnd5">
+              <figure class="rnd5"><a href="<?php get_permalink($post->ID) ?>"><img src="<?php echo $img_url[0] ?>" width="100" height="100" alt="<?php echo $post->post_title ?>"></a></figure>
+              <header>
+                <h2><a href="<?php get_permalink($post->ID) ?>"><?php echo get_the_title($post->ID) ?></a></h2>
+                <p><a href="<?php get_category_link(get_the_category($post->ID)) ?>" rel="category tag"><?php get_the_category($post->ID)[0]->cat_name ?></a></p>
+                <a class="iconb-game" href="<?php get_permalink($post->ID) ?>" title="Play"><span>Play</span></a>
+              </header>
+            </article>
+
+          <?php } ?>
+        </div>
+      </div>
+    <?php } ?>
+
+
+    <?php if (is_category() and !is_category(array(1))) { ?>
+      <?php
+      // Generate dynamic heading for SEO
+      $category = get_category(get_query_var('cat'));
+      $cat_id = $category->cat_ID;
+      $result = $wpdb->get_results("SELECT * FROM wp_category_custom WHERE category_id = $cat_id");
+      if (!empty($result)) {
+      ?>
+        <h1><?php echo $result[0]->title ?></h1>
+      <?php } ?>
+      <div style="display: flex; flex-direction: column; margin-left: 10px">
+        <h2 style="font-size: 20px; font-weight: bold; color: #fff">Top categories</h2>
+        <?php
+        $topCategory = get_option('top_category_homepage');
+        if ($topCategory) {
+          $arrTopCategory = json_decode(json_encode(json_decode($topCategory)), true); ?>
+
+          <div class="top-cate-homepage">
+            <div class="list-top-cate">
+              <?php foreach ($arrTopCategory as $category => $status) {
+                if ($status == 'true') { ?>
+                  <a href="<?php echo get_category_link(get_cat_ID($category)) ?>">
+                    <div class="in-list-top-cate"><?php echo ucfirst(str_replace('-', ' ', $category)) ?></div>
+                  </a>
+              <?php }
+              } ?>
+            </div>
+          </div>
+        <?php }
+        ?>
+
+        <?php
+        $category = get_category(get_query_var('cat'));
+        $queryGet = "SELECT * FROM " . $wpdb->prefix . 'top_game_category WHERE category_id = "' . $category->term_id . '"';
+        $resultTopGame = $wpdb->get_results($queryGet);
+
+        if (empty($resultTopGame)) {
+          $listTopGame = array();
+        } else {
+          if (empty($resultTopGame[0]->game)) {
+            $listTopGame = array();
+          } else {
+            $listTopGame = explode(',', $resultTopGame[0]->game);
+          }
+        }
+
+        ?>
+        <div class="top-cate-homepage">
+          <h2 style="font-size: 20px; font-weight: bold; color: #fff">Top games</h2>
+          <div class="list-top-cate">
+            <?php foreach ($listTopGame as $post_id) {
+              $img_url = get_post_meta($post_id, 'mabp_thumbnail_url');
+            ?>
+
+              <article class="pstcnt bgco1 rnd5">
+                <figure class="rnd5"><a href="<?php get_permalink($post_id) ?>"><img src="<?php echo $img_url[0] ?>" width="100" height="100" alt="<?php echo get_the_title($post_id) ?>"></a></figure>
+                <header>
+                  <h2><a href="<?php get_permalink($post_id) ?>"><?php echo get_the_title($post_id) ?></a></h2>
+                  <p><a href="<?php get_category_link(get_the_category($post_id)) ?>" rel="category tag"><?php get_the_category($post_id)[0]->cat_name ?></a></p>
+                  <a class="iconb-game" href="<?php get_permalink($post_id) ?>" title="Play"><span>Play</span></a>
+                </header>
+              </article>
+            <?php } ?>
+          </div>
+        </div>
+      </div>
+
+    <?php } ?>
 
     <!--<bdcn>-->
     <section class="bdcn">
